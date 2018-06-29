@@ -250,8 +250,7 @@ FUNCTION(MYSQL_INSTALL_TARGETS)
     ENDIF()
     # Install man pages on Unix
     IF(UNIX)
-      GET_TARGET_PROPERTY(target_location ${target} LOCATION)
-      INSTALL_MANPAGE(${target_location})
+      INSTALL_MANPAGE($<TARGET_FILE:${target}>)
     ENDIF()
   ENDFOREACH()
 
