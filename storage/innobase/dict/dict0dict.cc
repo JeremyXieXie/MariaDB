@@ -36,6 +36,7 @@ Created 1/8/1996 Heikki Tuuri
 #include "fts0fts.h"
 #include "fil0fil.h"
 #include <algorithm>
+#include "sql_table.h"
 
 /** dummy index for ROW_FORMAT=REDUNDANT supremum and infimum records */
 dict_index_t*	dict_ind_redundant;
