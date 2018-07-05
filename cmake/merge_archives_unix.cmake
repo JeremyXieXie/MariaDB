@@ -1,6 +1,6 @@
 # Copyright (c) 2009 Sun Microsystems, Inc.
 # Use is subject to license terms.
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; version 2 of the License.
@@ -12,17 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA 
-
-# This script merges many static libraries into
-# one big library on Unix.
-SET(TARGET_LOCATION "@TARGET_LOCATION@")
-SET(TARGET "@TARGET@")
-SET(STATIC_LIBS "@STATIC_LIBS@")
-SET(CMAKE_CURRENT_BINARY_DIR "@CMAKE_CURRENT_BINARY_DIR@")
-SET(CMAKE_AR "@CMAKE_AR@")
-SET(CMAKE_RANLIB "@CMAKE_RANLIB@")
-
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 SET(TEMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/merge_archives_${TARGET})
 MAKE_DIRECTORY(${TEMP_DIR})
