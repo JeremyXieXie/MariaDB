@@ -364,12 +364,6 @@ IF(PCRE_BUILD_TESTS)
 
   # exes in Debug location tested by the RunTest shell script
   # via "make test"
-  IF(PCRE_BUILD_PCREGREP)
-    GET_TARGET_PROPERTY(PCREGREP_EXE pcregrep DEBUG_LOCATION)
-  ENDIF(PCRE_BUILD_PCREGREP)
-
-  GET_TARGET_PROPERTY(PCRETEST_EXE pcretest DEBUG_LOCATION)
-  STRING(REGEX REPLACE "[^/]+$" "" PCRETEST_DIR ${PCRETEST_EXE})
 
 # =================================================
   # Write out a CTest configuration file
@@ -381,12 +375,12 @@ MESSAGE(\"When testing is complete, review test output in the
 MESSAGE(\" \")
 ")
 
-  FILE(WRITE ${PROJECT_BINARY_DIR}/pcre_test.sh
+  FILE(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/pcre_test.sh CONTENT
   "#! /bin/sh
 # This is a generated file.
 srcdir=${PROJECT_SOURCE_DIR}
-pcretest=${PCRETEST_EXE}
-cd ${PCRETEST_DIR}
+pcretest=$<TARGET_FILE:pcretest>
+cd $<TARGET_FILE_DIR:pcretest>
 . ${PROJECT_SOURCE_DIR}/RunTest
 if test \"$?\" != \"0\"; then exit 1; fi
 # End
@@ -397,13 +391,13 @@ if test \"$?\" != \"0\"; then exit 1; fi
   ENDIF(UNIX)
 
   IF(PCRE_BUILD_PCREGREP)
-    FILE(WRITE ${PROJECT_BINARY_DIR}/pcre_grep_test.sh
+    FILE(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/pcre_grep_test.sh CONTENT
     "#! /bin/sh
 # This is a generated file.
 srcdir=${PROJECT_SOURCE_DIR}
-pcregrep=${PCREGREP_EXE}
-pcretest=${PCRETEST_EXE}
-cd ${PCRETEST_DIR}
+pcregrep=$<TARGET_FILE:pcregrep>
+pcretest=$<TARGET_FILE:pcretest>
+cd $<TARGET_FILE_DIR:pcretest>
 . ${PROJECT_SOURCE_DIR}/RunGrepTest
 if test \"$?\" != \"0\"; then exit 1; fi
 # End
@@ -418,14 +412,13 @@ if test \"$?\" != \"0\"; then exit 1; fi
     # Provide environment for executing the bat file version of RunTest
     FILE(TO_NATIVE_PATH ${PROJECT_SOURCE_DIR} winsrc)
     FILE(TO_NATIVE_PATH ${PROJECT_BINARY_DIR} winbin)
-    FILE(TO_NATIVE_PATH ${PCRETEST_EXE} winexe)
 
-    FILE(WRITE ${PROJECT_BINARY_DIR}/pcre_test.bat
+    FILE(GENERATE OUTPUT ${PROJECT_BINARY_DIR}/pcre_test.bat CONTENT
     "\@REM This is a generated file.
 \@echo off
 setlocal
 SET srcdir=\"${winsrc}\"
-SET pcretest=\"${winexe}\"
+SET pcretest=\"$<TARGET_FILE:pcretest>\"
 if not [%CMAKE_CONFIG_TYPE%]==[] SET pcretest=\"${winbin}\\%CMAKE_CONFIG_TYPE%\\pcretest.exe\"
 call %srcdir%\\RunTest.Bat
 if errorlevel 1 exit /b 1
